@@ -1,0 +1,41 @@
+version: '3'
+services:
+  name-server-ui:
+    build: ./name-server-ui
+    expose:
+      - "3000"
+    ports:
+      - 8081:3000
+    networks:
+      - name-server
+  name-server-api:
+    build: ./name-server-api
+    depends_on:
+      - db
+    expose:
+      - "8080"
+    ports:
+      - 8080:8080
+    networks:
+      - name-server
+    command: dev
+    environment:
+      CONNECTIONSTRING: 'mongodb://root:example@db:27017'
+  name-server-nginx:
+    build: ./name-server-nginx
+    ports:
+      - 80:80
+    networks:
+      - name-server
+  db:
+    image: mongo
+    expose:
+      - "27017"
+    networks:
+      - name-server
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+networks:
+  name-server:
