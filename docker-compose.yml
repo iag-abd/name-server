@@ -36,6 +36,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ../data/db:/data/db
 
 networks:
   name-server:
